@@ -10,7 +10,7 @@ namespace EcoModeSwitcher
 {
     public class Publisher : IPublisher
     {
-        private readonly List<IListener> _listener;
+        private readonly List<IListener> _listeners;
         private readonly ILockerSystemManager _lockerSystem;
         private readonly ILogger<Publisher> _logger;
 
@@ -19,7 +19,7 @@ namespace EcoModeSwitcher
         {
             _logger = logger;
             _lockerSystem = lockerSystemManager;
-            _listener = new List<IListener>();
+            _listeners = new List<IListener>();
 
         }
 
@@ -35,8 +35,8 @@ namespace EcoModeSwitcher
                 throw new ArgumentNullException(paramName: nameof(listener), message: "parameter cannot be null");
             }
 
-            if (!_listener.Contains(listener))
-                _listener.Add(listener);
+            if (!_listeners.Contains(listener))
+                _listeners.Add(listener);
         }
 
 
@@ -48,7 +48,7 @@ namespace EcoModeSwitcher
         {
             try
             {
-                _listener.Remove(listener);
+                _listeners.Remove(listener);
             }
             catch (ArgumentException ex)
             {
@@ -92,7 +92,7 @@ namespace EcoModeSwitcher
         private void Notify(IEnumerable<LockerState> states)
         {
             if (states != null)
-                foreach (var item in _listener)
+                foreach (var item in _listeners)
                 {
                     if (item.IsActive() != false)
                         try
